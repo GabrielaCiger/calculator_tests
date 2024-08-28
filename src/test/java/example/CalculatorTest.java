@@ -10,27 +10,23 @@ public class CalculatorTest {
 
     @Test
     @DisplayName("Addition test")
-    @Order(3)
     void addition() {
         assertEquals(3, calculator.add(1, 2));
     }
 
     @Test
     @DisplayName("Subtract test")
-    @Order(1)
     void subtract() {
         assertEquals(8, calculator.subtract(10, 2));
     }
 
     @Test
     @DisplayName("Multiply test")
-    @Order(2)
     void multiply() {
         assertEquals(20, calculator.multiply(10, 2));
     }
 
     @ParameterizedTest
-    @Order(4)
     @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8})
     @DisplayName("Divide test")
     void divide(int number) {
@@ -38,10 +34,17 @@ public class CalculatorTest {
     }
 
     @ParameterizedTest
-    @Order(5)
-    @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8})
+    @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8})
     @DisplayName("Divide test 2")
     void divideTrue(int number) {
-        assertTrue(calculator.divide(number, 8) == 1);
+        if (number==0){
+            ArithmeticException thrown = assertThrows(ArithmeticException.class, () -> {
+                calculator.divide(8, number);
+            });
+            assertEquals("Cannot divide by zero", thrown.getMessage());
+        } else {
+            float result = calculator.divide(8, number);
+            assertTrue(result >= 1);
+        }
     }
 }
